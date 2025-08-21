@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>プロフィールリスト</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: sans-serif; margin: 15px; }
+    h1 { text-align: center; }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+    }
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      justify-content: center;
+    }
+    .card {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 10px;
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+    }
+    .card img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+    .card div { flex: 1; }
+    .delete-btn {
+      margin-left: 10px;
+      color: red;
+      cursor: pointer;
+      font-size: 20px;
+    }
+    @media (max-width: 600px) {
+      .card { flex-direction: column; align-items: flex-start; }
+      .card img { margin-bottom: 8px; }
+      .delete-btn { align-self: flex-end; }
+    }
+  </style>
+</head>
+<body>
+  <h1>プロフィールリスト</h1>
+
+  <!-- 入力フォーム -->
+  <form id="profileForm">
+    <input type="text" id="name" placeholder="名前" required>
+    <input type="number" id="id" placeholder="ID (数字)" required>
+    <input type="text" id="bio" placeholder="プロフィール文">
+    <input type="url" id="icon" placeholder="アイコン画像のURL">
+    <button type="submit">追加</button>
+  </form>
+
+  <!-- 並び替えボタン -->
+  <div class="buttons">
+    <button onclick="sortByName()">五十音順</button>
+    <button onclick="sortById()">ID順</button>
+  </div>
+
+  <!-- リスト表示 -->
+  <div id="list"></div>
+
+  <script>
+    let profiles = [];
+
+    // localStorageから読み込み
+    if (localStorage.getItem("profiles")) {
+      profiles = JSON.parse(localStorage.getItem("profiles"));
+    }
+    renderList(profiles);
+
+    // フォーム送信イベント
+    document.getElementById("profileForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const newProfile = {
+        name: document.getElementById("name").value,
+        id: parseInt(document.getElementById("id").value),
+        bio: document.getElementById("bio").value,
+        icon: document.getElementById("icon").value
+      };
+      profiles.push(newProfile);
+      saveData();
+      renderList(profiles);
+      e.target.reset();
+    });
+
+    function renderList(arr) {
+      const container = document.getElementById("list");
+      container.innerHTML = "";
+      arr.forEach((p, index) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${p.icon || 'https://via.placeholder.com/50'}">
+          <div>
+            <strong>${p.name}</strong> (ID:${p.id})<br>
+            <span>${p.bio}</span>
+          </div>
+          <span class="delete-btn" onclick="deleteProfile(${index})">✖</span>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function saveData() {
+      localStorage.setItem("profiles", JSON.stringify(profiles));
+    }
+
+    function deleteProfile(index) {
+      profiles.splice(index, 1);
+      saveData();
+      renderList(profiles);
+    }
+
+    function sortByName() {
+      profiles.sort((a,b) => a.name.localeCompare(b.name, "ja"));
+      saveData();
+      renderList(profiles);
+    }
+
+    function sortById() {
+      profiles.sort((a,b) => a.id - b.id);
+      saveData();
+      renderList(profiles);
+    }
+  </script>
+</body>
+</html>
