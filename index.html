@@ -2,311 +2,244 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>通過シナリオ</title>
+<title>シナリオ一覧</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Google Fonts: Baloo 2 -->
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600&display=swap" rel="stylesheet">
+<!-- Google Fonts: Baloo 3 -->
+<link href="https://fonts.googleapis.com/css2?family=Baloo+3:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 body {
-  font-family: 'Baloo 2', 'Noto Sans JP', sans-serif;
+  font-family: 'Baloo 3', 'Noto Sans JP', sans-serif;
   margin: 15px;
   font-size: 13px;
   background-color: #fff;
-  color: #5c4033; /* 文字色：落ち着いた茶色 */
+  color: #5c4033;
 }
 
-h1 {
-  text-align: center;
-  font-size: 20px;
-  color: #8b5e3c; /* 見出し色 */
-  margin-top: 50px; /* PC版 */
-}
+h1 { text-align:center; font-size:20px; color:#8b5e3c; margin-top:50px; }
+h2 { margin-top:40px; font-size:16px; color:#8b5e3c; text-align:center; }
 
-/* PC版: 上部コントロール */
-.controls {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 8px;
-  margin: 0 auto 12px;
-  width: 65%;
-}
-
-/* 検索窓 */
-.top-controls { flex: 1; }
-#searchInput {
-  width: 100%;
-  font-size: 12px;
-  padding: 5px 8px 5px 28px;
-  box-sizing: border-box;
-  border-radius: 12px;
-  border: 1px solid #bca189;
-  background-color: #fff3e0; /* 検索窓背景 */
-  background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"><circle cx="5" cy="5" r="4" stroke="%23654c38" stroke-width="2" fill="none"/><line x1="8" y1="8" x2="12" y2="12" stroke="%23654c38" stroke-width="2"/></svg>');
-  background-repeat: no-repeat;
-  background-position: 6px center;
-  background-size: 12px 12px;
-}
-
-/* 環境選択 + ボタン */
-.bottom-controls {
-  display: flex;
-  gap: 8px;
-}
+/* 共通コントロール */
+.controls { display:flex; flex-wrap:wrap; gap:8px; margin:0 auto 12px; justify-content:center; width:65%; }
+.top-controls { flex:1; }
+.bottom-controls { display:flex; gap:8px; justify-content:center; }
 .bottom-controls select {
-  width: 120px;
-  height: 36px;
-  font-size: 14px;
-  padding: 6px 10px;
-  border-radius: 12px;
-  border: 1px solid #bca189;
-  background-color: #fff3e0;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6"><polygon points="0,0 10,0 5,6" style="fill:%23654c38;"/></svg>');
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 10px 6px;
-  cursor: pointer;
+  width:120px; height:36px; font-size:14px; padding:6px 10px;
+  border-radius:12px; border:1px solid #bca189; background-color:#fff3e0;
+  appearance:none; -webkit-appearance:none; -moz-appearance:none;
+  background-image:url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6"><polygon points="0,0 10,0 5,6" style="fill:%23654c38;"/></svg>');
+  background-repeat:no-repeat; background-position:right 10px center; background-size:10px 6px; cursor:pointer;
 }
 .bottom-controls button {
-  height: 36px;
-  width: 80px;
-  font-size: 12px;
-  border-radius: 12px;
-  background-color: #a67c52; /* ベースボタン色 */
-  color: #fff;
-  border: none;
-  cursor: pointer;
+  height:36px; width:80px; font-size:12px; border-radius:12px;
+  background-color:#a67c52; color:#fff; border:none; cursor:pointer;
 }
-.bottom-controls button.active { background-color: #704b2c; } /* アクティブ */
-.bottom-controls button:hover { background-color: #8b5e3c; } /* ホバー */
+.bottom-controls button.active { background-color:#704b2c; }
+.bottom-controls button:hover { background-color:#8b5e3c; }
+
+/* 検索窓デザイン */
+.top-controls input[type="text"] {
+  width: 100%; font-size: 12px; padding: 5px 8px 5px 28px;
+  box-sizing: border-box; border-radius: 12px; border: 1px solid #bca189;
+  background-color: #fff3e0;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"><circle cx="5" cy="5" r="4" stroke="%23654c38" stroke-width="2" fill="none"/><line x1="8" y1="8" x2="12" y2="12" stroke="%23654c38" stroke-width="2"/></svg>');
+  background-repeat: no-repeat; background-position: 6px center; background-size: 12px 12px;
+}
 
 /* テーブル */
-.data-table {
-  width: 65%;
-  margin: 0 auto;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin-top: 10px;
-  table-layout: fixed;
-  font-size: 12px;
-  min-width: 500px;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.data-table th, .data-table td {
-  border: 1px solid #bca189; /* 枠線色 */
-  padding: 6px 10px;
-  text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.data-table th { background-color: #fff3e0; }
-
-/* 角のセルだけ角丸 */
-.data-table th:first-child { border-top-left-radius: 8px; }
-.data-table th:last-child { border-top-right-radius: 8px; }
-.data-table tr:last-child td:first-child { border-bottom-left-radius: 8px; }
-.data-table tr:last-child td:last-child { border-bottom-right-radius: 8px; }
+.data-table { width:65%; margin:0 auto; border-collapse:separate; border-spacing:0; margin-top:10px; table-layout:fixed; font-size:12px; min-width:500px; border-radius:8px; overflow:hidden; }
+.data-table th, .data-table td { border:1px solid #bca189; padding:6px 10px; text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.data-table th { background-color:#fff3e0; }
+.data-table th:first-child { border-top-left-radius:8px; }
+.data-table th:last-child { border-top-right-radius:8px; }
+.data-table tr:last-child td:first-child { border-bottom-left-radius:8px; }
+.data-table tr:last-child td:last-child { border-bottom-right-radius:8px; }
 
 /* PC列幅 */
-.data-table colgroup col:nth-child(1) { width: 7%; }
-.data-table colgroup col:nth-child(2) { width: 50%; }
-.data-table colgroup col:nth-child(3) { width: 15%; }
-.data-table colgroup col:nth-child(4) { width: 15%; }
-.data-table colgroup col:nth-child(5) { width: 13%; }
+.data-table colgroup col:nth-child(1) { width:7%; }
+.data-table colgroup col:nth-child(2) { width:50%; }
+.data-table colgroup col:nth-child(3) { width:15%; }
+.data-table colgroup col:nth-child(4) { width:15%; }
+.data-table colgroup col:nth-child(5) { width:13%; }
 
 /* スマホ版 */
-@media (max-width: 600px) {
-  h1 { margin-top: 25px; } /* スマホ版余白 */
-
-  .controls {
-    flex-direction: column;
-    width: 95%;
-    margin: 0 auto 8px;
-    gap: 4px;
-  }
-
-  .top-controls { width: 100%; }
-  #searchInput {
-    width: 100%;
-    font-size: 9px;
-    padding: 4px 4px 4px 20px;
-    border-radius: 10px;
-    box-sizing: border-box;
-    background-color: #fff3e0;
-    background-position: 4px center;
-    background-size: 12px 12px;
-  }
-
-  .bottom-controls {
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-  .bottom-controls select {
-    width: 100px;
-    height: 24px;
-    font-size: 9px;
-    padding: 2px 4px;
-    border-radius: 10px;
-    background-color: #fff3e0;
-  }
-  .bottom-controls button {
-    width: 65px;
-    height: 24px;
-    font-size: 9px;
-    padding: 2px 4px;
-    border-radius: 10px;
-    background-color: #a67c52;
-  }
-
-  .data-table {
-    width: 100%;
-    font-size: 9px;
-    min-width: 0;
-    table-layout: auto;
-  }
-  .data-table colgroup col:nth-child(1) { width: 7%; }
-  .data-table colgroup col:nth-child(2) { width: 45%; }
-  .data-table colgroup col:nth-child(3) { width: 12%; }
-  .data-table colgroup col:nth-child(4) { width: 18%; }
-  .data-table colgroup col:nth-child(5) { width: 18%; }
-  .data-table th, .data-table td {
-    padding: 2px 4px;
-    white-space: normal;
-    word-break: break-word;
-  }
+@media (max-width:600px){
+  h1{margin-top:25px;}
+  .controls{flex-direction:column;width:95%;margin:0 auto 8px;gap:4px;}
+  .top-controls{width:100%;}
+  .top-controls input[type="text"]{width:100%; font-size:11px; padding:4px 4px 4px 20px; border-radius:10px; background-color:#fff3e0; background-position:4px center; background-size:12px 12px;}
+  .bottom-controls{width:100%; justify-content:center; flex-wrap:wrap; gap:4px;}
+  .bottom-controls select{width:100px; height:24px; font-size:11px; padding:2px 4px; border-radius:10px; background-color:#fff3e0;}
+  .bottom-controls button{width:65px; height:24px; font-size:11px; padding:2px 4px; border-radius:10px; background-color:#a67c52;}
+  .data-table{width:100%; font-size:11px; min-width:0; table-layout:auto;}
+  .data-table colgroup col:nth-child(1){width:8%;}
+  .data-table colgroup col:nth-child(2){width:49%;}
+  .data-table colgroup col:nth-child(3){width:15%;}
+  .data-table colgroup col:nth-child(4){width:10%;}
+  .data-table colgroup col:nth-child(5){width:18%;}
+  .data-table th, .data-table td{padding:2px 4px; white-space:normal; word-break:break-word;}
 }
 </style>
 </head>
 <body>
-<h1>通過シナリオ</h1>
+<h1>シナリオ一覧</h1>
 
-<div class="controls">
-  <div class="top-controls">
-    <input type="text" id="searchInput" placeholder="検索（タイトル・ふりがな部分一致）" oninput="filterList()">
-  </div>
-  <div class="bottom-controls">
-    <select id="envSelect" onchange="filterList()">
-      <option value="">環境を選択</option>
-    </select>
-    <button onclick="toggleSort(this, 'furigana')">五十音順</button>
-    <button onclick="toggleSort(this, 'no')">通過No.順</button>
-  </div>
+<div class="top-controls" style="width:65%; margin:0 auto 12px;">
+  <input type="text" id="searchInput_all" placeholder="検索（タイトル・ふりがな部分一致）">
 </div>
 
-<div id="list">読み込み中...</div>
+<h2>通過シナリオ</h2>
+<div class="controls" id="controls_played"></div>
+<div id="list_played">読み込み中...</div>
+
+<h2>通過予定シナリオ</h2>
+<div class="controls" id="controls_scheduled"></div>
+<div id="list_scheduled">読み込み中...</div>
+
+<h2>気になるシナリオ</h2>
+<div class="controls" id="controls_interest"></div>
+<div id="list_interest">読み込み中...</div>
 
 <script>
-let profiles = [];
-let currentList = [];
-let activeButton = null;
+const tableConfigs=[
+  {id:"played", file:"played.json"},
+  {id:"scheduled", file:"scheduled.json"},
+  {id:"interest", file:"interest.json"}
+];
 
-async function loadData() {
-  try {
-    const res = await fetch("data.json");
-    profiles = await res.json();
-    currentList = [...profiles];
-    populateEnvOptions(profiles);
-    renderList(currentList);
-  } catch (e) {
-    document.getElementById("list").innerText = "データを読み込めませんでした。";
-    console.error(e);
-  }
-}
+tableConfigs.forEach(cfg=>initTable(cfg.id,cfg.file));
 
-function populateEnvOptions(data) {
-  const select = document.getElementById("envSelect");
-  const envs = [...new Set(data.map(p => p.env).filter(e => e))];
-  envs.forEach(env => {
-    const option = document.createElement("option");
-    option.value = env;
-    option.textContent = env;
-    select.appendChild(option);
-  });
-}
-
-function renderList(arr) {
-  const container = document.getElementById("list");
-  container.innerHTML = "";
-  const table = document.createElement("table");
-  table.className = "data-table";
-  table.innerHTML = `
-    <colgroup>
-      <col>
-      <col>
-      <col>
-      <col>
-      <col>
-    </colgroup>
-    <thead>
-      <tr>
-        <th>No.</th>
-        <th>タイトル</th>
-        <th>PC</th>
-        <th>環境</th>
-        <th>通過日</th>
-      </tr>
-    </thead>
+function initTable(id,jsonFile){
+  const container=document.getElementById("list_"+id);
+  const controlsContainer=document.getElementById("controls_"+id);
+  controlsContainer.innerHTML=`
+    <div class="bottom-controls">
+      <select id="envSelect_${id}">
+        <option value="">環境を選択</option>
+      </select>
+      <button id="btnFurigana_${id}">五十音順</button>
+      <button id="btnNo_${id}">通過No.順</button>
+    </div>
   `;
-  const tbody = document.createElement("tbody");
-  arr.forEach(p => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${p.no}</td>
-      <td>${p.title || ""}</td>
-      <td>${p.pc || ""}</td>
-      <td>${p.env || ""}</td>
-      <td>${p.date || ""}</td>
-    `;
-    tbody.appendChild(row);
-  });
-  table.appendChild(tbody);
-  container.appendChild(table);
-}
+  let profiles=[], currentList=[], activeButton=null;
 
-function toggleSort(button, type) {
-  if (activeButton === button) {
-    currentList = [...profiles];
-    renderList(currentList);
-    button.classList.remove('active');
-    activeButton = null;
-  } else {
-    if (type === 'furigana') {
-      currentList = [...currentList].sort((a,b) => (a.furigana || "").localeCompare(b.furigana || "", "ja"));
-    } else if (type === 'no') {
-      currentList = [...currentList].sort((a,b) => a.no - b.no);
+  async function loadData(){
+    try{
+      const res=await fetch(jsonFile);
+      profiles=await res.json();
+      currentList=[...profiles];
+      populateEnvOptions();
+      renderList();
+    }catch(e){ container.innerText="データを読み込めませんでした。"; console.error(e); }
+  }
+
+  function populateEnvOptions(){
+    const select=document.getElementById("envSelect_"+id);
+    const envs=[...new Set(profiles.map(p=>p.env).filter(e=>e))];
+    envs.forEach(env=>{
+      const option=document.createElement("option");
+      option.value=env;
+      option.textContent=env;
+      select.appendChild(option);
+    });
+  }
+
+  function renderList(){
+    container.innerHTML="";
+    const table=document.createElement("table");
+    table.className="data-table";
+    table.innerHTML=`
+      <colgroup><col><col><col><col><col></colgroup>
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>タイトル</th>
+          <th>PC</th>
+          <th>環境</th>
+          <th>通過日</th>
+        </tr>
+      </thead>
+    `;
+    const tbody=document.createElement("tbody");
+    currentList.forEach(p=>{
+      let dateStr="";
+      if(p.date){
+        const d=new Date(p.date);
+        if(!isNaN(d)) dateStr=`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
+        else dateStr=p.date;
+      }
+      let envDisplay=p.env||"";
+      if(window.innerWidth<=600 && envDisplay==="CCFOLIA") envDisplay="CCF";
+      const row=document.createElement("tr");
+      row.innerHTML=`
+        <td>${p.no}</td>
+        <td>${p.title||""}</td>
+        <td>${p.pc||""}</td>
+        <td>${envDisplay}</td>
+        <td>${dateStr}</td>
+      `;
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+    container.appendChild(table);
+  }
+
+  function toggleSort(type){
+    const btnF=document.getElementById("btnFurigana_"+id);
+    const btnN=document.getElementById("btnNo_"+id);
+    const button=type==="furigana"?btnF:btnN;
+    if(activeButton===button){
+      currentList=[...profiles];
+      renderList();
+      button.classList.remove('active');
+      activeButton=null;
+    }else{
+      if(type==="furigana") currentList=[...currentList].sort((a,b)=>(a.furigana||"").localeCompare(b.furigana||"","ja"));
+      else currentList=[...currentList].sort((a,b)=>a.no-b.no);
+      renderList();
+      if(activeButton) activeButton.classList.remove('active');
+      button.classList.add('active');
+      activeButton=button;
     }
-    renderList(currentList);
-    if (activeButton) activeButton.classList.remove('active');
-    button.classList.add('active');
-    activeButton = button;
+  }
+
+  function filterList(query, envFilter){
+    currentList=profiles.filter(p=>{
+      const matchesText=(p.title && p.title.toLowerCase().includes(query))||(p.furigana && p.furigana.toLowerCase().includes(query));
+      const matchesEnv=envFilter?p.env===envFilter:true;
+      return matchesText && matchesEnv;
+    });
+    renderList();
+  }
+
+  document.getElementById("envSelect_"+id).addEventListener("change",()=>filterList(document.getElementById("searchInput_all").value.toLowerCase(), document.getElementById("envSelect_"+id).value));
+  document.getElementById("btnFurigana_"+id).addEventListener("click",()=>toggleSort("furigana"));
+  document.getElementById("btnNo_"+id).addEventListener("click",()=>toggleSort("no"));
+
+  loadData();
+
+  // 共通検索
+  document.getElementById("searchInput_all").addEventListener("input",(e)=>{
+    const q=e.target.value.toLowerCase();
+    tableConfigs.forEach(cfg=>{
+      const envFilter=document.getElementById("envSelect_"+cfg.id).value;
+      const containerId=cfg.id;
+      filterListTable(containerId, q, envFilter);
+    });
+  });
+
+  function filterListTable(id, query, envFilter){
+    const tblProfiles=currentList=[];
+    const select=document.getElementById("envSelect_"+id);
+    currentList=profiles.filter(p=>{
+      const matchesText=(p.title && p.title.toLowerCase().includes(query))||(p.furigana && p.furigana.toLowerCase().includes(query));
+      const matchesEnv=envFilter?p.env===envFilter:true;
+      return matchesText && matchesEnv;
+    });
+    renderList();
   }
 }
-
-function filterList() {
-  const query = document.getElementById("searchInput").value.toLowerCase();
-  const envFilter = document.getElementById("envSelect").value;
-  currentList = profiles.filter(p => {
-    const matchesText = (p.title && p.title.toLowerCase().includes(query)) ||
-                        (p.furigana && p.furigana.toLowerCase().includes(query));
-    const matchesEnv = envFilter ? p.env === envFilter : true;
-    return matchesText && matchesEnv;
-  });
-  renderList(currentList);
-}
-
-loadData();
 </script>
 </body>
 </html>
